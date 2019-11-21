@@ -11,6 +11,7 @@ from polarityComputers.hashtagPolarity import HashtagsPolarity
 parser = argparse.ArgumentParser()
 parser.add_argument("model", help="Polarity Computing Class", type=int)
 parser.add_argument("tweets", help="tweets as an ndjson file")
+parser.add_argument("--limit", help="iteration limit", type=int)
 args = parser.parse_args()
 
 #======= Functions ======
@@ -46,6 +47,7 @@ def main():
     tweets = loadTweetsFromNDJson(args.tweets)
     tweetsWithPolarity = []
     outputFile = defineOutputFilename(args.model)
+    limit = args.limit if args.limit else len(tweets)
 
     i = 0
     for tweet in tweets:
@@ -70,6 +72,9 @@ def main():
         tweetsWithPolarity.append(tweet)
 
         i += 1
+
+        if i == limit:
+            break
 
     print('Processed {}/{}'.format(len(tweetsWithPolarity), len(tweets)))
     print('Writing processed tweets to {}'.format(outputFile)) 
