@@ -4,6 +4,7 @@
 import argparse
 import ndjson
 import sys
+import os
 
 from polarityComputers.hashtagPolarity import HashtagsPolarity
 
@@ -36,7 +37,8 @@ def defineOutputFilename(model):
 
 def main():
     if (0 == args.model):
-        polarityComputer = HashtagsPolarity('../Polarisation.csv')
+        polarisationFile = os.path.dirname(os.path.abspath(__file__)) + '/polarityCsv/Polarisation.csv'
+        polarityComputer = HashtagsPolarity(polarisationFile)
     else:
         print("Available models : \n")
         print("0 - Hashtags")
