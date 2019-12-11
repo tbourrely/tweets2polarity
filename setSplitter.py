@@ -7,7 +7,7 @@ from os import path
 #========= ARGS =========
 parser = argparse.ArgumentParser()
 parser.add_argument("file", help="File ")
-parser.add_argument("training", help="Traning set percentage", type=int)
+parser.add_argument("training", help="Training set percentage", type=int)
 parser.add_argument("--validation", help="Validation set percentage", type=int)
 parser.add_argument("test", help="Test set percentage", type=int)
 args = parser.parse_args()
