@@ -12,6 +12,7 @@ from polarityComputers.hashtagPolarity import HashtagsPolarity
 parser = argparse.ArgumentParser()
 parser.add_argument("model", help="Polarity Computing Class", type=int)
 parser.add_argument("tweets", help="tweets as an ndjson file")
+parser.add_argument("version", help="Polarisation file version", type=int)
 parser.add_argument("--limit", help="iteration limit", type=int)
 args = parser.parse_args()
 
@@ -37,7 +38,7 @@ def defineOutputFilename(model):
 
 def main():
     if (0 == args.model):
-        polarisationFile = os.path.dirname(os.path.abspath(__file__)) + '/polarityCsv/Polarisation.csv'
+        polarisationFile = os.path.dirname(os.path.abspath(__file__)) + '/polarityCsv/PolarisationV{}.csv'.format(args.version)
         polarityComputer = HashtagsPolarity(polarisationFile)
     else:
         print("Available models : \n")
