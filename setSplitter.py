@@ -9,7 +9,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("file", help="File ")
 parser.add_argument("training", help="Training set percentage", type=int)
 parser.add_argument("--validation", help="Validation set percentage", type=int)
-parser.add_argument("test", help="Test set percentage", type=int)
+parser.add_argument("--test", help="Test set percentage", type=int)
 args = parser.parse_args()
 
 #======= Functions ======
@@ -26,6 +26,7 @@ tweets = loadTweetsFromNDJson(args.file)
 tweetsLength = len(tweets)
 
 validationPercentage = args.validation if args.validation else 0
+testPercentage = args.test if args.test else 0
 
 outputDir = path.dirname(args.file)
 traningOutput = outputDir + '/training.json'
@@ -33,19 +34,21 @@ validationOutput = outputDir + '/validation.json'
 testOutput = outputDir + '/test.json'
 
 trainingLength = int(tweetsLength * args.training / 100)
-testLength = int(tweetsLength * args.test / 100)
+testLength = int(tweetsLength * testPercentage / 100)
 validationLength = int(tweetsLength * validationPercentage / 100)
 
 trainingTweets = tweets[:trainingLength]
 validationTweets = tweets[trainingLength + 1:trainingLength + validationLength] if validationLength != 0 else None
-testTweets = tweets[trainingLength + validationLength + 1: trainingLength + validationLength + testLength]
+testTweets = tweets[trainingLength + validationLength + 1: trainingLength + validationLength + testLength] if testLength != 0 else None
 
 print('training : ' + str(len(trainingTweets)))
 print('validation : {}'.format(str(len(validationTweets)) if validationTweets else 'None') )
-print('test : ' + str(len(testTweets)))
+print('test : {}'.format(str(len(testTweets)) if testTweets else 'None'))
 
 writeNDJsonToFile(traningOutput, trainingTweets)
-writeNDJsonToFile(testOutput, testTweets)
+
+if testTweets:
+    writeNDJsonToFile(testOutput, testTweets)
 
 if validationTweets:
     writeNDJsonToFile(validationOutput, validationTweets)
@@ -53,5 +56,5 @@ if validationTweets:
 print('----------------------------')
 print('training: {}'.format(traningOutput))
 print('validation: {}'.format(validationOutput if validationTweets else 'None'))
-print('test: {}'.format(testOutput))
+print('test: {}'.format(testOutput if testTweets else 'None'))
 print('----------------------------')
