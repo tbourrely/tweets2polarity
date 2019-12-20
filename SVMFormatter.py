@@ -23,18 +23,18 @@ def save(fileName, content):
 
 def prepareWordListAndLabels(tweets):
     words = [False] # index must start at 1
-    labels = []
+    labels = ['objective', 'negative', 'positive', 'mixed']
 
     for tweet in tweets:
-        label = tweet['polarity']
+        # label = tweet['polarity']
         message = tweet['message']
 
         for word in message.split():
             if word not in words:
                 words.append(word)
 
-        if label not in labels:
-            labels.append(label)
+        # if label not in labels:
+        #     labels.append(label)
 
     return (words, labels)
 
@@ -43,7 +43,7 @@ def formatForSVM(tweets, words, labels):
 
     for tweet in tweets:
         message = tweet['message']
-        label = tweet['polarity']
+        label = tweet['polarity'] if 'polarity' in tweet else labels[0]
 
         wordsInTweet = {}
 
@@ -80,11 +80,13 @@ testWords = []
 testLabels = []
 
 if trainTweets:
+    print('{} train tweets'.format(len(trainTweets)))
     print('Preparing training wordlist and labels')
     trainingWords, trainingLabels = prepareWordListAndLabels(trainTweets)
     print('Train : {} words, {} labels'.format(len(trainingWords), len(trainingLabels)))
 
 if testTweets:
+    print('{} test tweets'.format(len(testTweets)))
     print('Preparing test wordlist and labels')
     testWords, testLabels = prepareWordListAndLabels(testTweets)
     print('Test : {} words, {} labels'.format(len(testWords), len(testLabels)))

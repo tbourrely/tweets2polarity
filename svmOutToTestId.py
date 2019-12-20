@@ -17,7 +17,7 @@ def save(fileName, content):
 
 lines = ''
 out = 'svm_results.txt'
-labels = ('negatif', 'positif', 'autre')
+labels = labels = ('autre', 'negatif', 'positif', 'mixte')
 
 with open(args.svmOut, 'r') as svmOut:
     with open(args.test, 'r') as testFile:

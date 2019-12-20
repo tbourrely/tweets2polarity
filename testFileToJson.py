@@ -24,9 +24,11 @@ with open(input_file, newline='', encoding='utf-8') as file:
 
         tweets.append({
             'identifier': identifier,
-            'message': message,
-            'polarity': None
+            'message': message
         })
         
         line = file.readline()
+
+
+writeNDJsonToFile(output_file, tweets)
     
