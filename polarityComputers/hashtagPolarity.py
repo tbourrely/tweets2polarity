@@ -50,4 +50,9 @@ class HashtagsPolarity:
             if self.isNegative(hashtag):
                 negativeScore += 1
 
+        # divide by number of hashtags to have a percentage
+        if len(hashtags) != 0:
+            positiveScore = positiveScore / len(hashtags)
+            negativeScore = negativeScore / len(hashtags)
+
         return [positiveScore, negativeScore]
