@@ -98,18 +98,22 @@ def main():
 
     limit = args.limit if args.limit else len(tweets)
     
+    # file containing manual hahstags classification
     polarisationFile = os.path.dirname(os.path.abspath(__file__)) + '/polarityCsv/PolarisationV{}.csv'.format(args.version)
-    hashtagsPolarityComputer = HashtagsPolarity(polarisationFile)
-    testBlobPolarityComputer = TextBlobPolarity()
+    
+    hashtagsPolarityComputer = HashtagsPolarity(polarisationFile) # class to classify using hashtags
+    testBlobPolarityComputer = TextBlobPolarity() # class to classify using textblob
 
     # create a dataframe containing collumn from json and a new one with cleaned message
     tweetsDataframe = listToCleanDataframe(tweets)
 
     i = 0
 
+    # iterate over tweets list
     for index, row in tweetsDataframe.iterrows():
         print('Processing tweet {}'.format(index))
 
+        # do not process if structure is not valid !!!
         if not validateTweetStructure(row):
             print('-- invalid --')
             continue
@@ -126,7 +130,6 @@ def main():
 
         print('Hasgtags scores : pos {} neg {}'.format(hashtagsPositive, hashtagsNegative))
         print('Textblob scores : polarity : {} subjectivity {} Pos {} Neg {}'.format(textblocPolarity, textblobSubjectivity, textblocPositive, textblocNegative))
-
 
         totalPositive = hashtagsPositive * 0.33 + textblocPositive
         totalNegative = hashtagsNegative * 0.33 + textblocNegative
@@ -146,8 +149,8 @@ def main():
             
         row['polarity'] = polarity
 
+        # save tweet to list
         tweetsWithPolarity.append(row.to_dict())
-        
 
         i += 1
 
@@ -157,6 +160,7 @@ def main():
 
     print('Processed {}/{}'.format(len(tweetsWithPolarity), len(tweets)))
     print('Writing processed tweets to {}'.format(outputFile)) 
+
     writeNDJsonToFile(outputFile, tweetsWithPolarity)
     
 
