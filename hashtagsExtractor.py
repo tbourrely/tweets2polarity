@@ -1,6 +1,11 @@
 import json, re, ndjson
+import argparse 
 
-file = "convertjson.json"
+parser = argparse.ArgumentParser()
+parser.add_argument("fileinput", help="tweets as an ndjson file")
+args = parser.parse_args()
+
+file = args.fileinput
 outfile = "processedTweets.json"
 
 regex = "(#[-0-9a-zÀ-ÿA-Z]*)"
@@ -9,9 +14,9 @@ i = 1
 
 f = open(file)
 content = f.read()
-jsonContent = json.loads(content)
+jsonContent = ndjson.loads(content)
 
-tweetsList = jsonContent['tweet']
+tweetsList = jsonContent
 
 processedTweets = []
 
